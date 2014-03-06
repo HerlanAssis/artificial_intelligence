@@ -79,7 +79,7 @@ def main():
 		if (labelTest[i] == labelResult[i]):
 			rightResults += 1
 
-	print "IA - KNN implementation - Joao Helis Bernardo"
+	print "Artificial Intelligence - KNN implementation - Joao Helis Bernardo"
 	print "\nK =",k
 	print str(float(rightResults)/len(labelResult)*100)+"% correct."	
 	print rightResults, "of", len(labelResult), "right results.\n"
