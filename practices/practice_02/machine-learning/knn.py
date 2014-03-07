@@ -45,21 +45,21 @@ def knn(k, flower):
 	return classify(nearbyFlowers)
 
 def getBest_K():	
-	flowers = flowerTest
+	flowers = flowerTreining
 	bestK = 1
 	maxRightResults = 0
 	for k in range(1, len(flowers)+1):
 		rightResults = 0
 		for i in range(len(flowers)):			
-			if knn(k, flowers[i]) == int(labelTest[i].replace("\n","")):
+			if knn(k, flowers[i]) == flowerTreining[i][4]:
 				rightResults += 1
 		if(maxRightResults < rightResults):
 			maxRightResults = rightResults
 			bestK = k
-	return bestK, maxRightResults
+	return bestK, maxRightResults, len(flowers)
 
 # main
-#print getBest_K()
+# print getBest_K()
 
 def main():
 	k = 4
