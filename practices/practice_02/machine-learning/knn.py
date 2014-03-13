@@ -38,14 +38,14 @@ def knn(k, flower, flowerTreining):
 	nearbyFlowers = near(k, flower, flowerTreining)
 	return classify(nearbyFlowers)
 
-def getBest_K():	
-	flowers = flowerTreining
+def best_K(flowerTest, labelTest, flowerTreining):	
+	flowers = flowerTest
 	bestK = 1
 	maxRightResults = 0
 	for k in range(1, len(flowers)+1):
 		rightResults = 0
 		for i in range(len(flowers)):			
-			if knn(k, flowers[i]) == flowerTreining[i][4]:
+			if knn(k, flowers[i], flowerTreining) == int(labelTest[i]):
 				rightResults += 1
 		if(maxRightResults < rightResults):
 			maxRightResults = rightResults
@@ -53,14 +53,13 @@ def getBest_K():
 	return bestK, maxRightResults, len(flowers)
 
 # main
-# print getBest_K()
 
 def main():
 	flowerTreining = csv("treining.csv")[1:]
 	flowerTest = csv("test.csv")[1:]
-	labelTest = txt("label-test.txt")
-	
-	k = 1
+	labelTest = txt("label-test.txt")		
+
+	k = 1 # print best_K(flowerTest, labelTest, flowerTreining)[0]
 
 	resultFile = open("result.txt", 'w')	
 	for i in range(len(flowerTest)):		
