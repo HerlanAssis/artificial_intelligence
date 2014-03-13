@@ -7,8 +7,8 @@ def csv(fileName):
 	csvFile.close()	
 	for i in range(len(contentLines)):
 		contentLines[i] = contentLines[i].split(",")
-		for j in range(len(contentLines[i])):		
-			contentLines[i][j] = contentLines[i][j].replace("\n", "")
+		j = len(contentLines[i]) - 1
+		contentLines[i][j] = contentLines[i][j].replace("\n", "")			
 	return contentLines
 
 def txt(fileName):
