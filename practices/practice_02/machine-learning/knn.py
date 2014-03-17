@@ -1,38 +1,41 @@
 import math
 from operator import itemgetter
 
-def csv(fileName):
-	csvFile = open(fileName)
-	contentLines = csvFile.readlines()
-	csvFile.close()	
+def simpleFile(fileName):
+	file = open(fileName)
+	contentLines = file.readlines();
+	file.close()
+	return contentLines
+
+def csv(fileName):	
+	contentLines = simpleFile(fileName) 	
 	for i in range(len(contentLines)):
 		contentLines[i] = contentLines[i].split(",")
 		j = len(contentLines[i]) - 1
 		contentLines[i][j] = contentLines[i][j].replace("\n", "")			
 	return contentLines
 
-def txt(fileName):
-	txtFile = open(fileName)
-	contentLines = txtFile.readlines();
-	txtFile.close()
-	return contentLines
-
-def distance(p, q): return math.sqrt((float(p[0]) - float(q[0]))**2 + (float(p[1]) - float(q[1]))**2 + (float(p[2]) - float(q[2]))**2 + (float(p[3]) - float(q[3]))**2)
-
+def distance(p, q): 
+	aux = 0
+	for i in range(len(p)): aux += (float(p[i]) - float(q[i])) ** 2
+	return math.sqrt(aux)
+	
 def near(k, flower, flowers):
 	nearbyFlowers = []
 	for i in range(len(flowers)):		
-		nearbyFlowers.append([distance(flower, flowers[i]), i, int(flowers[i][4])])
+		nearbyFlowers.append([distance(flower, flowers[i]), int(flowers[i][4])])
 	nearbyFlowers.sort()
 	return nearbyFlowers[:k]
 
 def classify(nearbyFlowers):
 	dic = {}
 	for i in nearbyFlowers:
-		if(not(dic.has_key(i[2]))):
-			dic[i[2]] = 0
-		dic[i[2]] =  dic[i[2]] + 1
-	return sorted(dic.items(), key=itemgetter(1), reverse=True)[0][0]
+		if(not(dic.has_key(i[1]))):
+			dic[i[1]] = 0		
+		dic[i[1]] += 1
+	sorted_dic = sorted(dic.items(), key=itemgetter(1))
+	sorted_dic.reverse()
+	return sorted_dic[0][0]
 	
 def knn(k, flower, flowerTreining):
 	nearbyFlowers = near(k, flower, flowerTreining)
@@ -42,7 +45,7 @@ def best_K(flowerTest, labelTest, flowerTreining):
 	flowers = flowerTest
 	bestK = 1
 	maxRightResults = 0
-	for k in range(1, len(flowers)+1):
+	for k in range(1, len(flowerTreining)+1):
 		rightResults = 0
 		for i in range(len(flowers)):			
 			if knn(k, flowers[i], flowerTreining) == int(labelTest[i]):
@@ -57,16 +60,16 @@ def best_K(flowerTest, labelTest, flowerTreining):
 def main():
 	flowerTreining = csv("treining.csv")[1:]
 	flowerTest = csv("test.csv")[1:]
-	labelTest = txt("label-test.txt")		
+	labelTest = simpleFile("label-test.txt")		
 
-	k = 1 # print best_K(flowerTest, labelTest, flowerTreining)[0]
+	k = 1 # print best_K(flowerTest, labelTest, flowerTreining)
 
 	resultFile = open("result.txt", 'w')	
 	for i in range(len(flowerTest)):		
 		resultFile.write(str(knn(k, flowerTest[i], flowerTreining)) + ("" if i == len(flowerTest)-1 else "\n"))
 	resultFile.close()
 	
-	labelResult = txt("result.txt")
+	labelResult = simpleFile("result.txt")
 		
 	rightResults = 0
 
