@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-from collections import Counter
 from nltk.tokenize import WordPunctTokenizer
 import random, re
 
@@ -64,7 +63,7 @@ def make_phrase(n, n_grams, words, _words_sequence_map):
 
 def main():
     words = bag_of_words('bag_of_words.txt')    
-    n = 4
+    n = 3
     n_grams = make_n_gram(n, words)        
     _words_sequence_map = words_sequence_map(n_grams)
     print 'Markov N-gram generation - Artificial Inteligence - João Helis\n'
