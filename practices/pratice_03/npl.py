@@ -45,7 +45,6 @@ def make_phrase(n, n_grams, words, _words_sequence_map):
         words_sequence = []
         while True:            
             word = n_gram_next_word(key_words_sequence, _words_sequence_map)            
-            if word == None: continue
             last_n_gram = words_sequence[-n+2:]+[word] if -n+2 or len(words_sequence) + 1 < n-1 else [word]                
             if len(words_sequence) + 1 < n-1:
                 word_n_grams = [n_gram for n_gram in n_grams if n_gram[-2] == last_n_gram[-1]]
