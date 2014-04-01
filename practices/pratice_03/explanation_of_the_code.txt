@@ -1,0 +1,55 @@
+Aluno: João Helis Bernardo
+
+Explicação do código:
+
+Para gerar a bag of words utilizo um método do nltk. Esse método considera todas as pontuações, e então, as separa também como palavra.
+
+O método make_n_gram cria todos os possível n gramas existentes no texto. Por exemplo: make_n_gram, passando n=4 como parâmetro, logo, ele retornará todos os possíveis quadrigramas existentes.
+
+o método words_sequence_map cria um map, que faz o mapeamento entre uma chave k, e seu respectivo valor, que será a próxima palavra de um n grama.
+
+Por exemplo: 
+
+#considerando_bigramas
+
+texto: "joao gosta de IA. IA eh massa!"
+
+lista_de_n_gramas = [['joao','gosta'],['gosta', 'de'],['de', 'IA'],['IA','.'],['.','IA'],['IA', 'eh'],['eh','massa'],['massa','!']]
+
+o método words_sequence_map retornará um dicionário da seguinte forma:
+
+{	
+	'joao':['gosta'],
+	'gosta':['de'],
+	...
+	...
+	'IA':['.','eh']
+}
+
+De tal forma, se eu quero saber qual a próxima palavra que vem após 'IA', eu vejo quais as possíveis possibilidades, e sorteio uma de forma aleatória. É o que faz o método n_gram_next_word.
+
+O método make_phrase, cria frases considerando um n_grama qualquer. As frases são consideradas como encerradas quando uma pontuação como ., ?, ou !, é a palavra sorteada.
+
+Este método, para o unigrama, cria frases de forma que não considera a influência de uma palavra anterior, para a escolha de uma palavra seguinte. Ou seja, as palavras são escolhidas a partir da bag_of_words de forma aleatória, até que uma palavra que seja considerada como final de frase seja escolhida.
+
+Para os demais n_gramas, o método faz a escolha de uma palavra para uma frase, considerando as n-1 palavras anteriores.
+
+Por exemplo:
+
+Considerando-se que o método está criando frases a partir de bigramas.
+
+lista_de_n_gramas = [['joao','gosta'],['gosta', 'de'],['de', 'IA'],['IA','.'],['.','IA'],['IA', 'eh'],['eh','massa'],['massa','!']]
+
+'gosta' foi a primeira palavra sorteada, de forma aleatória.
+
+frase = 'gosta'
+
+para sortear a próxima palavra, é necessário achar o bigrama que a penúltima palavra comece com 'gosta', uma vez que o método n_gram_next_word, considera as n-1 palavras anteriores, pra retornar a próxima palavra.
+
+Logo, para que se saiba qual a próxima palavra após gosta, é passado o n_grama ['gosta','de'] ao método n_gram_next_word, que retornará 'de'.
+
+A frase ficará agora da seguinte forma:
+
+frase = 'gosta de'
+
+O método n_gram_next_word é chamado dentro de make_phrase até que uma palavra considerada como final de frase seja sorteada.
