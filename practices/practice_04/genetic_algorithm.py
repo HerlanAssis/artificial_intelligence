@@ -72,27 +72,22 @@ def genetic_algorithm(population, max_generations, percent_of_mutate):
 			evaluated_population =  evaluated_population[:number_of_individuals_original_population]
 			population = [individual[1] for individual in evaluated_population]		
 		for individual in evaluated_population:	
-			if individual[0] == 0:
-				print 'generation:',generation,'-',			
+			if individual[0] == 0:				
 				return individual_to_cards(individual[1])				
 		parents = roulette(int(len(population)*0.2), population)
 		parents_pair = [[parents[i], parents[i+1]] for i in range(0, len(parents)-1, 2)]		
 		children = []
 		for parents_pair_element in parents_pair:
 			children += uniform_crossover(parents_pair_element)
-		if generation > mutate_over_generations:
+		if generation > mutate_over_generations:			
 			children = mutate_all(children, percent_of_mutate)
 		population += children
 		max_generations-= 1
 		generation += 1
-	print 'generation:',generation,'->',
 	return individual_to_cards(sorted(evaluate_individuals(population))[0][1])	
 
-def main():
-	count = 0		
-	population = make_population(number_of_individuals=20)	
-	while count < 20:
-		result = genetic_algorithm(population, max_generations=5, percent_of_mutate=0.2)	
-		print result		
-		count += 1
+def main():		
+	population = make_population(number_of_individuals=20)		
+	print genetic_algorithm(population, max_generations=5, percent_of_mutate=0.2)		
+	
 main()
